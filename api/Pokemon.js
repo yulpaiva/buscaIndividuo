@@ -1,14 +1,5 @@
 const mongoose = require('mongoose');
 
-export default function handler(req, res) {
-    if (req.method === 'GET') {
-        res.status(200).json({ message: 'Rota funcionando!' });
-    } else {
-        res.status(405).json({ message: 'Método não permitido' });
-    }
-}
-
-
 const pokemonSchema = new mongoose.Schema({
     name: { type: String, required: true },          // Aceita qualquer string
     type: { type: String, required: true },          // Aceita qualquer string
@@ -22,3 +13,12 @@ const pokemonSchema = new mongoose.Schema({
 
 const Pokemon = mongoose.model('Pokemon', pokemonSchema);
 module.exports = Pokemon;
+
+export default function handler(req, res) {
+    if (req.method === 'GET') {
+        // Simulação de resposta com JSON
+        res.status(200).json([{ name: 'Pikachu', type: 'Elétrico' }]);
+    } else {
+        res.status(405).json({ message: 'Método não permitido' });
+    }
+}

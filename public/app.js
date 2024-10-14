@@ -132,3 +132,4 @@ applyDarkMode();
 
 // Carrega os Pokémons ao iniciar
 loadPokemons();
+
