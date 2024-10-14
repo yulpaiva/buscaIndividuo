@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta indivíduos</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <h2>Consulta indivíduos</h2>
+    <button id="toggleDarkMode">Modo Escuro</button>
+    
+    <!-- Botão para mostrar o formulário de cadastro -->
+    <button id="showFormButton">Cadastrar indivíduos</button>
+
+    <!-- Campo de pesquisa -->
+    <input type="text" id="searchInput" placeholder="Pesquisar pelo nome...">
+    
+    <!-- Contêiner do formulário -->
+    <div id="pokemonFormContainer" style="display: none;"> <!-- Inicialmente oculto -->
+        <form id="pokemonForm">
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="type">MG:</label>
+                <input type="text" id="type" required>
+            </div>
+            <div class="form-group">
+                <label for="description">CPF:</label>
+                <textarea id="description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="height">Endereço:</label>
+                <input type="text" id="height" required> <!-- Alterado para texto -->
+            </div>
+            <div class="form-group">
+                <label for="weight">Passagens:</label>
+                <input type="text" id="weight" required> <!-- Alterado para texto -->
+            </div>
+            <div class="form-group">
+                <label for="abilities">Comentários:</label>
+                <input type="text" id="abilities" required>
+            </div>
+            <div class="form-group">
+                <label for="baseExperience">Observações:</label>
+                <input type="text" id="baseExperience" required> <!-- Alterado para texto -->
+            </div>
+            <div class="form-group">
+                <label for="image">Imagem:</label>
+                <input type="file" id="image" accept="image/*" required>
+            </div>
+            <button type="submit">Cadastrar indivíduo</button>
+        </form>
+    </div>
+
+    <!-- Div para exibir a lista de Pokémons cadastrados -->
+    <div id="pokemonList" class="pokemon-list"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

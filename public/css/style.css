@@ -1,0 +1,148 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s; /* Transição suave */
+}
+
+.container {
+    width: 90%; /* Ajusta a largura para 90% em telas pequenas */
+    max-width: 600px; /* Limita a largura máxima em dispositivos grandes */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilo do formulário */
+form {
+    display: grid; /* Usando grid para organizar os campos */
+    grid-template-columns: 1fr; /* Colunas de largura igual para telas pequenas */
+    gap: 20px; /* Espaço entre os campos */
+    margin-bottom: 20px;
+}
+
+/* Estilo dos grupos de campos */
+.form-group {
+    display: flex;
+    flex-direction: column; /* Coloca label e input um embaixo do outro */
+}
+
+/* Estilo dos inputs, textarea e botão */
+input, textarea, button {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Ajuste do botão */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo da lista de Pokémons */
+.pokemon-list {
+    display: grid; /* Usando grid para organizar os cartões */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Cartões responsivos */
+    gap: 20px; /* Espaço entre os cartões */
+    padding: 10px;
+}
+
+/* Estilo do cartão do Pokémon */
+.pokemon-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pokemon-card:hover {
+    transform: translateY(-5px); /* Eleva o cartão ao passar o mouse */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.pokemon-image {
+    width: 100%; /* Imagem ocupa a largura do cartão */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 5px; /* Bordas arredondadas para a imagem */
+}
+
+/* Modo escuro com especificidade aumentada */
+body.dark-mode {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .pokemon-card {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode input, 
+body.dark-mode textarea, 
+body.dark-mode button {
+    background-color: #333 !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #555 !important;
+}
+
+/* Botão de alternância de modo escuro */
+#toggleDarkMode {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px; /* Aumenta o padding para tornar o botão mais largo */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Animação suave */
+}
+
+body.dark-mode #toggleDarkMode {
+    background-color: #0056b3;
+    color: #e0e0e0;
+}
+
+/* Efeito de hover para o botão */
+#toggleDarkMode:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Aumenta um pouco o botão ao passar o mouse */
+}
+
+body.dark-mode #toggleDarkMode:hover {
+    background-color: #004494; /* Escurece o botão no modo escuro */
+}
+
+/* Media queries para responsividade */
+@media (min-width: 600px) {
+    form {
+        grid-template-columns: repeat(2, 1fr); /* Duas colunas em telas maiores */
+    }
+    
+    button {
+        grid-column: span 2; /* Faz o botão ocupar duas colunas */
+    }
+}
+
+@media (max-width: 600px) {
+    .pokemon-list {
+        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+    }
+}
