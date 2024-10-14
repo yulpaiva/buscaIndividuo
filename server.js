@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Conexão com o MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/pokedex');
+mongoose.connect('mongodb+srv://yulbrynner73:HEZdgKtubL5ccvqa@cluster0.4roqo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
 // Middleware para JSON
 app.use(express.json());
