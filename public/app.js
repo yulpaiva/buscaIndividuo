@@ -23,68 +23,89 @@ document.getElementById('pokemonForm').addEventListener('submit', async (event) 
     formData.append('abilities', document.getElementById('abilities').value);
     formData.append('baseExperience', document.getElementById('baseExperience').value);
 
-    const response = await fetch('/api/pokemons', {
-        method: 'POST',
-        body: formData,
-    });
+    try {
+        const response = await fetch('/api/pokemons', {
+            method: 'POST',
+            body: formData,
+        });
 
-    const pokemon = await response.json();
-    alert('Indivíduo cadastrado com sucesso!');
-    loadPokemons();
+        if (!response.ok) {
+            throw new Error('Erro ao cadastrar Pokémon'); // Lança um erro se a resposta não for 2xx
+        }
+
+        const pokemon = await response.json();
+        alert('Indivíduo cadastrado com sucesso!');
+        loadPokemons();
+    } catch (error) {
+        console.error(error);
+        alert('Erro ao cadastrar Pokémon: ' + error.message);
+    }
 });
 
 // Função para carregar Pokémons cadastrados
 async function loadPokemons() {
-    const response = await fetch('/api/pokemons');
-    const pokemons = await response.json();
+    try {
+        const response = await fetch('/api/pokemons');
+        if (!response.ok) {
+            throw new Error('Erro ao carregar Pokémons'); // Lança um erro se a resposta não for 2xx
+        }
 
-    const pokemonList = document.getElementById('pokemonList');
-    pokemonList.innerHTML = '';
+        const pokemons = await response.json();
+        const pokemonList = document.getElementById('pokemonList');
+        pokemonList.innerHTML = '';
 
-    pokemons.forEach((pokemon) => {
-        console.log(pokemon); // Verifique a estrutura do objeto Pokémon
-        const card = document.createElement('div');
-        card.classList.add('pokemon-card');
-        card.innerHTML = `
-            <h3>${pokemon.name}</h3>
-            <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image">
-            <p><strong>RG:</strong> ${pokemon.type}</p>
-            <p><strong>CPF:</strong> ${pokemon.description}</p>
-            <p><strong>Endereço:</strong> ${pokemon.height}</p>
-            <p><strong>Passagens:</strong> ${pokemon.weight}</p>
-            <p><strong>Comentários:</strong> ${pokemon.abilities}</p>
-            <p><strong>Observações:</strong> ${pokemon.baseExperience}</p>
-            <button class="delete-button" data-id="${pokemon._id}">Apagar</button>
-        `;
-        //<button class="delete-button" data-id="${pokemon._id}">Apagar</button> comando para apagar
-        pokemonList.appendChild(card);
-    });
-
-    // Adiciona evento de clique a cada botão de apagar
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const pokemonId = event.target.getAttribute('data-id'); // Captura o _id do Pokémon
-            console.log(`ID do Pokémon a ser apagado: ${pokemonId}`); // Adicione este log
-            if (pokemonId) {
-                await deletePokemon(pokemonId); // Passa o ID corretamente para a função
-            } else {
-                alert('ID do Pokémon não encontrado.');
-            }
+        pokemons.forEach((pokemon) => {
+            console.log(pokemon); // Verifique a estrutura do objeto Pokémon
+            const card = document.createElement('div');
+            card.classList.add('pokemon-card');
+            card.innerHTML = `
+                <h3>${pokemon.name}</h3>
+                <img src="${pokemon.imageUrl}" alt="${pokemon.name}" class="pokemon-image">
+                <p><strong>Tipo:</strong> ${pokemon.type}</p>
+                <p><strong>Descrição:</strong> ${pokemon.description}</p>
+                <p><strong>Altura:</strong> ${pokemon.height} m</p>
+                <p><strong>Peso:</strong> ${pokemon.weight} kg</p>
+                <p><strong>Habilidades:</strong> ${pokemon.abilities.join(', ')}</p>
+                <p><strong>Experiência Base:</strong> ${pokemon.baseExperience}</p>
+                <button class="delete-button" data-id="${pokemon._id}">Apagar</button>
+            `;
+            pokemonList.appendChild(card);
         });
-    });    
+
+        // Adiciona evento de clique a cada botão de apagar
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const pokemonId = event.target.getAttribute('data-id'); // Captura o _id do Pokémon
+                console.log(`ID do Pokémon a ser apagado: ${pokemonId}`); // Adicione este log
+                if (pokemonId) {
+                    await deletePokemon(pokemonId); // Passa o ID corretamente para a função
+                } else {
+                    alert('ID do Pokémon não encontrado.');
+                }
+            });
+        });
+    } catch (error) {
+        console.error(error);
+        alert('Erro ao carregar Pokémons: ' + error.message);
+    }
 }
 
 // Função para deletar Pokémon
 async function deletePokemon(pokemonId) {
-    const response = await fetch(`/api/pokemons/${pokemonId}`, {
-        method: 'DELETE',
-    });
+    try {
+        const response = await fetch(`/api/pokemons/${pokemonId}`, {
+            method: 'DELETE',
+        });
 
-    if (response.ok) {
-        alert('Pokémon apagado com sucesso!');
-        loadPokemons(); // Recarrega a lista de Pokémons
-    } else {
-        alert('Erro ao apagar Pokémon. Tente novamente.');
+        if (response.ok) {
+            alert('Pokémon apagado com sucesso!');
+            loadPokemons(); // Recarrega a lista de Pokémons
+        } else {
+            throw new Error('Erro ao apagar Pokémon'); // Lança um erro se a resposta não for 2xx
+        }
+    } catch (error) {
+        console.error(error);
+        alert('Erro ao apagar Pokémon: ' + error.message);
     }
 }
 
@@ -92,7 +113,7 @@ async function deletePokemon(pokemonId) {
 document.getElementById('searchInput').addEventListener('input', () => {
     const searchValue = document.getElementById('searchInput').value.toLowerCase();
     const cards = document.querySelectorAll('.pokemon-card');
-    
+
     cards.forEach(card => {
         const pokemonName = card.querySelector('h3').textContent.toLowerCase();
         if (pokemonName.includes(searchValue)) {
@@ -121,7 +142,7 @@ function applyDarkMode() {
 toggleDarkModeButton.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     const isDarkMode = document.body.classList.contains('dark-mode');
-    
+
     // Salva o estado no armazenamento local
     localStorage.setItem('darkMode', isDarkMode);
     toggleDarkModeButton.textContent = isDarkMode ? 'Modo Claro' : 'Modo Escuro';
@@ -132,4 +153,3 @@ applyDarkMode();
 
 // Carrega os Pokémons ao iniciar
 loadPokemons();
-
