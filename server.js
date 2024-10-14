@@ -6,7 +6,7 @@ const path = require('path');
 const Pokemon = require('./models/Pokemon'); // Modelo do MongoDB
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Usa a porta do Vercel ou 3000 localmente
 
 // Verifica se a pasta 'uploads' existe, caso contrário, cria a pasta
 const uploadDir = path.join(__dirname, 'uploads');
@@ -27,7 +27,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Conexão com o MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/pokedex');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pokedex', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // Middleware para JSON
 app.use(express.json());
@@ -53,8 +56,6 @@ app.delete('/api/pokemons/:id', async (req, res) => {
         res.status(500).send({ message: 'Erro ao tentar apagar Pokémon' }); // Retorna 500 em caso de erro
     }
 });
-
-
 
 app.post('/api/pokemons', upload.single('image'), async (req, res) => {
     const { name, type, description, height, weight, abilities, baseExperience } = req.body;
